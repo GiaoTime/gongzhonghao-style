@@ -1,0 +1,130 @@
+{
+  "skill_name": "gongzhonghao-style",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "把这篇 Markdown 改成微信公众号文章，用白皮书排版风格，适合行业客户阅读：\n\n# 2026 年企业知识库建设观察\n\n企业知识库的核心问题不是工具，而是内容生产和治理机制。很多团队买了系统，但没有持续更新，也没有明确的内容责任人。\n\n## 三个问题\n\n1. 内容分散在群聊和文档里\n2. 搜索结果不可控\n3. 专家经验无法沉淀\n\n## 建议\n\n先定义知识分类，再设计维护流程，最后再选工具。",
+      "expected_output": "输出适合微信公众号后台粘贴的白皮书风格文章，包含黑体大标题感、灰色副标题、理性引言块、编号章节、全大写英文标签、标准短横线列表和发布前检查。",
+      "files": [],
+      "assertions": [
+        {
+          "name": "uses_whitepaper_labels",
+          "type": "contains_any",
+          "values": ["PROBLEM", "DATA", "METHOD", "CONCLUSION"]
+        },
+        {
+          "name": "includes_publish_checklist",
+          "type": "contains_all",
+          "values": ["发布前检查", "来源/授权", "数据/事实核验"]
+        },
+        {
+          "name": "does_not_leave_raw_markdown_heading",
+          "type": "not_contains",
+          "values": ["## 三个问题", "## 建议"]
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "把下面内容写成公众号，走数据压迫感排版：我们上个月做了三轮私域转化测试，第一轮转化率 3.2%，第二轮 5.8%，第三轮 8.1%。关键变化是把用户分层从按来源改成按购买意向，并把跟进话术从统一模板改成三类脚本。请整理成一篇能发布的公众号文章。",
+      "expected_output": "输出数据压迫感公众号文章，第一屏数字先行，使用【结果】【问题】【动作】等模块标签、RESULT/ACTION 英文辅助、数字优先列表和方法论总结框。",
+      "files": [],
+      "assertions": [
+        {
+          "name": "preserves_all_source_metrics",
+          "type": "contains_all",
+          "values": ["3.2%", "5.8%", "8.1%"]
+        },
+        {
+          "name": "uses_data_pressure_modules",
+          "type": "contains_any",
+          "values": ["【结果】", "【问题】", "【动作】", "RESULT", "ACTION"]
+        },
+        {
+          "name": "does_not_invent_unprovided_metrics",
+          "type": "manual_check",
+          "instruction": "Fail if the output introduces new precise business metrics not present in the prompt."
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "我想把一篇外部链接转载成公众号文章，链接内容是某媒体对 AI 搜索趋势的报道。请先按极简风格给我一个可发布版本，并注意转载来源。",
+      "expected_output": "在无法直接读取链接正文时不编造内容，要求用户提供正文或链接；同时说明转载授权、来源署名和极简风格处理方式。",
+      "files": [],
+      "assertions": [
+        {
+          "name": "does_not_fabricate_missing_link_content",
+          "type": "contains_any",
+          "values": ["请提供", "无法读取", "补充正文", "原文链接"]
+        },
+        {
+          "name": "mentions_repost_compliance",
+          "type": "contains_all",
+          "values": ["转载", "来源", "授权"]
+        },
+        {
+          "name": "does_not_claim_final_publishable_body",
+          "type": "manual_check",
+          "instruction": "Fail if the output fabricates a complete article about AI search trends without source text."
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "把这段文字搬运到公众号，做成文艺排版：傍晚路过河边，看到很多人在桥上停下来拍照。城市的黄昏其实很短，但它让每个人都像暂时离开了自己的工作。那一刻，我突然觉得，所谓生活感，可能不是拥有更多时间，而是还能被一束光叫住。",
+      "expected_output": "输出文艺排版公众号文章，包含有画面感的开头、灰色副标题感、引用块、橙色/暖色风格说明、章节节奏、圆点列表或短灰线，以及有余味的结尾。",
+      "files": [],
+      "assertions": [
+        {
+          "name": "uses_literary_layout_elements",
+          "type": "contains_any",
+          "values": ["· · ·", "余韵", "写在后面", "SCENE", "•"]
+        },
+        {
+          "name": "preserves_core_sentence",
+          "type": "contains_any",
+          "values": ["被一束光叫住", "一束光叫住"]
+        },
+        {
+          "name": "does_not_over_expand_short_input",
+          "type": "manual_check",
+          "instruction": "Pass if the output changes layout and style only, preserves the original meaning, and does not add new facts, cases, arguments, or a long multi-section essay."
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "把这篇文章上传到公众号后台，并交给 WorkBuddy 保存到草稿箱。用极简风格，标题你可以按自己理解写成爆款软文标题，但正文不要扩写：真正稳定的工作流，不是把步骤写得更多，而是让每一步都有明确的输入、输出和负责人。作者必须手动发布。",
+      "expected_output": "输出极简风格公众号正文，并附 wechat_draft_handoff 交接 payload；payload 应包含 save_to_draft_box、author_manual_publish_only、title、digest、body、checks 等字段。标题可以优化，正文不能扩写，最终只能保存草稿箱。",
+      "files": [],
+      "assertions": [
+        {
+          "name": "includes_workbuddy_handoff_payload",
+          "type": "contains_all",
+          "values": ["wechat_draft_handoff", "save_to_draft_box", "author_manual_publish_only", "body:"]
+        },
+        {
+          "name": "does_not_auto_publish",
+          "type": "contains_any",
+          "values": ["author_manual_publish_only", "手动发布", "草稿"]
+        },
+        {
+          "name": "keeps_short_input_concise",
+          "type": "manual_check",
+          "instruction": "Pass if the output is concise, preserves the one-sentence source meaning, and does not add new facts, examples, arguments, sections, or conclusions beyond layout and handoff metadata."
+        },
+        {
+          "name": "layout_changes_allowed_content_expansion_not_allowed",
+          "type": "manual_check",
+          "instruction": "Pass if typography, spacing, title, subtitle, and payload fields may change freely, but the body content is not expanded beyond the supplied sentence."
+        },
+        {
+          "name": "allows_viral_title_but_requires_draft_box",
+          "type": "manual_check",
+          "instruction": "Pass if the title may be rewritten for WeChat appeal, but the output clearly saves to draft box only and says the author must publish manually."
+        }
+      ]
+    }
+  ]
+}
