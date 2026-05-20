@@ -27,7 +27,7 @@
     {
       "id": 2,
       "prompt": "把下面内容写成公众号，走数据压迫感排版：我们上个月做了三轮私域转化测试，第一轮转化率 3.2%，第二轮 5.8%，第三轮 8.1%。关键变化是把用户分层从按来源改成按购买意向，并把跟进话术从统一模板改成三类脚本。请整理成一篇能发布的公众号文章。",
-      "expected_output": "输出数据压迫感公众号文章，第一屏数字先行，使用【结果】【问题】【动作】等模块标签、RESULT/ACTION 英文辅助、数字优先列表和方法论总结框。",
+      "expected_output": "输出数据压迫感公众号适配版文章，使用文本解释和【数据卡片】描述块交替呈现。至少包含核心结果卡、问题卡、动作卡、结果对比卡；核心数据和模块总结不得用普通文本连续罗列。",
       "files": [],
       "assertions": [
         {
@@ -41,9 +41,29 @@
           "values": ["【结果】", "【问题】", "【动作】", "RESULT", "ACTION"]
         },
         {
+          "name": "uses_data_card_blocks",
+          "type": "contains_all",
+          "values": ["【数据卡片】", "视觉要求", "深色背景", "白字 + 蓝色强调", "用于后续生成图片"]
+        },
+        {
+          "name": "includes_required_card_types",
+          "type": "contains_all",
+          "values": ["核心结果卡", "问题卡", "动作卡", "结果对比卡"]
+        },
+        {
           "name": "does_not_invent_unprovided_metrics",
           "type": "manual_check",
           "instruction": "Fail if the output introduces new precise business metrics not present in the prompt."
+        },
+        {
+          "name": "does_not_fake_cards_with_text_art",
+          "type": "manual_check",
+          "instruction": "Pass if the output uses structured 【数据卡片】 description blocks for image generation instead of ASCII/table/symbol card simulation."
+        },
+        {
+          "name": "alternates_explanation_and_card",
+          "type": "manual_check",
+          "instruction": "Pass if the article alternates short text explanation and data card description blocks instead of dumping all data in plain text."
         }
       ]
     },
